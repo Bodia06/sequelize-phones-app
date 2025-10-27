@@ -5,7 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     const date = new Date();
     await queryInterface.bulkInsert(
-      'Phones',
+      'phones',
       [
         {
           model: 'Galaxy S25',
@@ -14,8 +14,8 @@ module.exports = {
           ram: 12,
           processor: 'Snapdragon 8 Gen 3',
           screen_size: 6.8,
-          createdAt: date,
-          updatedAt: date,
+          created_at: date,
+          updated_at: date,
         },
         {
           model: 'iPhone 16',
@@ -25,8 +25,8 @@ module.exports = {
           processor: 'A18 Bionic',
           screen_size: 6.7,
           has_nfc: false,
-          createdAt: date,
-          updatedAt: date,
+          created_at: date,
+          updated_at: date,
         },
         {
           model: 'Pixel 9',
@@ -36,8 +36,8 @@ module.exports = {
           processor: 'Google Tensor G3',
           screen_size: 6.4,
           has_nfc: true,
-          createdAt: date,
-          updatedAt: date,
+          created_at: date,
+          updated_at: date,
         },
       ],
       {}
@@ -45,6 +45,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Phones', null, {});
+    await queryInterface.bulkDelete('phones', null, {});
   },
 };

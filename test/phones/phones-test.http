@@ -1,0 +1,2 @@
+GET localhost:5001/api/phones/?page=1&results=4
+Content-Type: application/json
