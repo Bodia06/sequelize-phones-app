@@ -6,12 +6,32 @@ const phonesRouter = Router();
 
 phonesRouter
   .route('/')
-  .get(phonesController.getPhones)
-  .post(paginate.paginatePhones, phonesController.createPhone);
+  .get(paginate.paginatePhones, phonesController.getPhones)
+  .post(phonesController.createPhone);
 
 phonesRouter
   .route('/:id')
-  .patch(() => {})
-  .delete(() => {});
+  .patch(phonesController.updatePhone)
+  .delete(phonesController.deletePhone);
+
+phonesRouter
+  .route('/year/:year')
+  .get(phonesController.getAllPhonesByYear)
+  .patch(phonesController.updateAllPhonesQuelityYear)
+  .delete(phonesController.deleteAllPhonesByYear);
+
+phonesRouter.get(
+  '/more-year/:moreYear',
+  phonesController.getAllPhonesMoreThanYear
+);
+
+phonesRouter.get('/avg-ram', phonesController.avgRamAllPhones);
+
+phonesRouter.get('/count-by-brand', phonesController.countPhonesByBrands);
+
+phonesRouter.get(
+  '/brand-by-screen/:screenSize',
+  phonesController.brandByMaxScreenSize
+);
 
 module.exports = phonesRouter;

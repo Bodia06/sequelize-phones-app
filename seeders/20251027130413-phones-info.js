@@ -14,6 +14,7 @@ module.exports = {
           ram: 12,
           processor: 'Snapdragon 8 Gen 3',
           screen_size: 6.8,
+          has_nfc: Sequelize.literal('DEFAULT'),
           created_at: date,
           updated_at: date,
         },
