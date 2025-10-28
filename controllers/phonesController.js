@@ -1,4 +1,5 @@
 const createError = require('http-errors');
+const { Op } = require('sequelize');
 const _ = require('lodash');
 const { Phone } = require('../models');
 
@@ -45,9 +46,16 @@ module.exports.getAllPhonesByYear = async (req, res, next) => {
   const { year } = req.params;
 
   try {
+    const startDate = new Date(`${year}-01-01`);
+    const endDate = new Date(`${year}-12-31`);
+
     const foundPhones = await Phone.findAll({
       raw: true,
-      where: { year: year },
+      where: {
+        year: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
 
@@ -65,11 +73,12 @@ module.exports.getAllPhonesMoreThanYear = async (req, res, next) => {
   const { moreYear } = req.params;
 
   try {
+    const startDate = new Date(`${moreYear}-01-01`);
     const foundPhones = await Phone.findAll({
       raw: true,
       where: {
         year: {
-          [Phone.sequelize.Op.gt]: year,
+          [Op.gt]: startDate,
         },
       },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
