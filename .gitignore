@@ -178,3 +178,6 @@ vite.config.ts.timestamp-*
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Local environment configuration files
+.env
