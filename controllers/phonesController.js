@@ -229,7 +229,7 @@ module.exports.brandByMaxScreenSize = async (req, res, next) => {
       raw: true,
       where: {
         screenSize: {
-          [Phone.sequelize.Op.gt]: screenSize,
+          [Op.gt]: screenSize,
         },
       },
       attributes: ['brand'],
