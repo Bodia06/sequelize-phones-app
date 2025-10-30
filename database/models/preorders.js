@@ -5,7 +5,7 @@ const { STATUS_PREORDERS } = require('../../constants');
 module.exports = (sequelize, DataTypes) => {
   class Preorders extends Model {
     static associate (models) {
-      Preorders.belongsTo(models.Phones, {
+      Preorders.belongsTo(models.Phone, {
         foreignKey: 'phoneId',
       });
     }

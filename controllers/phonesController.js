@@ -1,7 +1,7 @@
 const createError = require('http-errors');
 const { Op } = require('sequelize');
 const _ = require('lodash');
-const { Phone } = require('../database/models');
+const { Preorders, Phone } = require('../database/models');
 
 module.exports.createPhone = async (req, res, next) => {
   const { body } = req;
@@ -245,6 +245,68 @@ module.exports.brandByMaxScreenSize = async (req, res, next) => {
     const brands = phones.map(phone => phone.brand);
 
     res.status(200).send({ data: brands });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports.getPreordersPhonesByPnonesId = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const foundPhone = await Phone.findByPk(id);
+
+    if (!foundPhone) {
+      return next(createError(404, `Phone with id ${id} not found`));
+    }
+
+    const preordersFoundPhone = await foundPhone.getPreorders({
+      raw: true,
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
+
+    if (!preordersFoundPhone || preordersFoundPhone.length === 0) {
+      return next(createError(404, `No preorders found for phone id ${id}`));
+    }
+    res.status(200).send({ data: preordersFoundPhone });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports.getPreordersPhonesAllInformation = async (req, res, next) => {
+  const { id } = req.params;
+  const { status } = req.query;
+
+  try {
+    const foundPreordersInfo = await Preorders.findOne({
+      where: {
+        id,
+        ...(status ? { status } : {}),
+      },
+      include: [
+        {
+          model: Phone,
+          attributes: ['brand', 'model', 'year', 'ram', 'screenSize'],
+        },
+      ],
+    });
+
+    if (!foundPreordersInfo) {
+      return next(
+        createError(
+          404,
+          `No preorder found with id ${id} and status ${status || 'any'}`
+        )
+      );
+    }
+
+    const preorderData = _.omit(foundPreordersInfo.get(), [
+      'createdAt',
+      'updatedAt',
+    ]);
+
+    res.status(200).send({ data: preorderData });
   } catch (err) {
     next(err);
   }

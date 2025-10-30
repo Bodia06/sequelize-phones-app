@@ -34,4 +34,13 @@ phonesRouter.get(
   phonesController.brandByMaxScreenSize
 );
 
+phonesRouter.get(
+  '/:id/preorders',
+  phonesController.getPreordersPhonesByPnonesId
+);
+
+phonesRouter.get(
+  '/preorders/:id',
+  phonesController.getPreordersPhonesAllInformation
+);
 module.exports = phonesRouter;
