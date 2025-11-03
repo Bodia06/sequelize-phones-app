@@ -12,11 +12,8 @@ const storage = multer.diskStorage({
 });
 
 function fileFilter (req, file, cb) {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-    cb(null, true);
-  } else {
-    cb(new Error('Only .jpeg and .png files are allowed'), false);
-  }
+  const MIMETYPE_REG_EXP = /^image\/(png|jpg|jpeg|gif)$/;
+  cb(null, MIMETYPE_REG_EXP.test(file.mimetype));
 }
 
 const upload = multer({ storage, fileFilter });
