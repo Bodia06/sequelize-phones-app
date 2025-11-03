@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { phonesController } = require('../controllers');
-const { paginate } = require('../middleware');
+const { paginate, upload } = require('../middleware');
 
 const phonesRouter = Router();
 
@@ -43,4 +43,11 @@ phonesRouter.get(
   '/preorders/:id',
   phonesController.getPreordersPhonesAllInformation
 );
+
+phonesRouter.patch(
+  '/:id/images',
+  upload.uploadPhoneImages,
+  phonesController.updatePhoneImages
+);
+
 module.exports = phonesRouter;

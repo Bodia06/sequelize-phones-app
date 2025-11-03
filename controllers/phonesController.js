@@ -311,3 +311,28 @@ module.exports.getPreordersPhonesAllInformation = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.updatePhoneImages = async (req, res, next) => {
+  const { filename } = req.file;
+  const { id } = req.params;
+
+  try {
+    const [updatedPhoneCount, updatedPhone] = await Phone.update(
+      { image: filename },
+      {
+        where: { id: id },
+        raw: true,
+        returning: true,
+      }
+    );
+
+    if (updatedPhoneCount === 0) {
+      return next(createError(404, `Phone with id ${id} not found`));
+    }
+
+    const phoneData = _.omit(updatedPhone, ['createdAt', 'updatedAt']);
+    res.status(200).send({ data: phoneData });
+  } catch (err) {
+    next(err);
+  }
+};
